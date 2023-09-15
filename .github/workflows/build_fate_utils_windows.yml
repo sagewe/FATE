@@ -31,8 +31,8 @@ jobs:
           git
     - shell: msys2 {0}
       run: |
-        pacman -S pacman-mirrors
-        pacman -S diffutils make mingw-w64-x86_64-gcc
+        pacman -S -y pacman-mirrors
+        pacman -S -y diffutils make mingw-w64-x86_64-gcc
     - uses: actions/checkout@v2
       with:
         ref: ${{github.event.inputs.source}}
