@@ -1,4 +1,4 @@
-Build FATE Utils Windows
+name: Build FATE Utils Windows
 
 on:
   workflow_dispatch:
