@@ -1,0 +1,39 @@
+Build FATE Utils Windows
+
+on:
+  workflow_dispatch:
+    inputs:
+      source:
+        description: 'source branch'
+        required: true
+      type:
+        description: 'publish type, test or testpypi or pypi'
+        required: false
+        default: 'test'
+
+jobs:
+  build_windows:
+    name: ${{ matrix.python-version }} - macos
+    runs-on: windows-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        python-version: ['3.8', '3.9', '3.10', '3.11']
+    steps:
+    - uses: actions/checkout@v2
+      with:
+        ref: ${{github.event.inputs.source}}
+    - uses: actions/setup-python@v2
+      with:
+        python-version: ${{ matrix.python-version }}
+    - name: macos-maturin
+      uses: messense/maturin-action@v1
+      with:
+        command: build
+        working-directory: rust/fate_utils/
+        args: --release -i python${{ matrix.python-version }} -o ../../dist
+    - name: Upload wheels
+      uses: actions/upload-artifact@v2
+      with:
+        name: wheels
+        path: dist
